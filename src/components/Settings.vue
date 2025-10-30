@@ -114,6 +114,8 @@
           @change="onDpiChange"
         />
 
+        <PollingRate />
+
         <div v-if="!dpiReady" class="warning">
           {{ t("ConnectToChangeDpi") }}
           <div class="micro">
@@ -160,6 +162,7 @@ import { useRouter } from "vue-router";
 import { Back } from "@element-plus/icons-vue";
 import DpiSetting from "./DpiSetting.vue";
 import HIDHandle from "./HIDHandle";
+import PollingRate from "./PollingRate.vue";
 // (optionnel) import BatteryHandle si tu veux le lissage ; sinon lecture directe
 // import BatteryHandle from "./BatteryHandle";
 
