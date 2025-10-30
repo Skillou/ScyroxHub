@@ -155,7 +155,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { Back } from "@element-plus/icons-vue";
 import DpiSetting from "./DpiSetting.vue";
@@ -344,6 +344,19 @@ onMounted(async () => {
     ensureConnected().then(loadDpiFromMouseCfg);
   });
 });
+
+/* --------- Batterie --------- */
+function syncBatteryFromDeviceInfo() {
+  const info = HIDHandle.deviceInfo;
+  battery.level = info?.battery?.level ?? 0;
+  battery.charging = info?.battery?.charging ?? false;
+  battery.voltage = info?.battery?.voltage ?? 0;
+}
+
+// Rafraîchissement périodique (toutes les 3 secondes)
+const batteryInterval = setInterval(syncBatteryFromDeviceInfo, 3000);
+
+onUnmounted(() => clearInterval(batteryInterval));
 
 /* --------- Handlers remontés par DpiSetting --------- */
 async function onUpdateDpiValue(val: number) {
